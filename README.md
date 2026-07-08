@@ -1,267 +1,153 @@
-# 🎬 MovieSearch
+# MovieSearch — Nexsoft Movie Search App
 
-A responsive movie search application built for the **Nexsoft Solutions Frontend Development Internship**.
+A responsive movie search application built with HTML5, CSS3, JavaScript, Bootstrap, jQuery, and the OMDB API.
 
-MovieSearch uses the **OMDB API** to fetch real movie data, display movie posters, show full movie information in a Bootstrap modal, and navigate results using dynamic pagination.
+## Live Links
 
----
+- GitHub Repository: https://github.com/fazal305/nexsoft-movie-search
+- Live Demo: https://fazal305.github.io/nexsoft-movie-search/
 
-## 🌐 Live Demo
+## Overview
 
-**GitHub Pages:**
+MovieSearch is a browser-based movie discovery app created for the Nexsoft Solutions Frontend Development Internship.
 
-https://fazal305.github.io/nexsoft-movie-search/
+Users can search for movies, view posters, browse paginated results, open detailed movie information in a Bootstrap modal, and use genre shortcut buttons for quick discovery.
 
----
+## Features
 
-## 📂 GitHub Repository
+- Search movies by title
+- Search using button click
+- Search using Enter key
+- Debounced live search
+- Default movie search on page load
+- Input validation
+- Real movie data from OMDB API
+- Movie posters
+- Poster fallback placeholders
+- Movie title and year display
+- Full movie details modal
+- IMDb rating display
+- Visual rating bar
+- Runtime, genre, director, actors, awards, language, country, and box office details
+- IMDb profile link
+- Dynamic pagination
+- First, previous, next, and last page buttons
+- Result count display
+- Skeleton loading cards
+- Empty state
+- Error state
+- Retry button
+- Back-to-top button
+- Responsive dark neon UI
 
-https://github.com/fazal305/nexsoft-movie-search
+## Tech Stack
 
----
-
-## ✨ Features
-
-### Movie Search
-
-* Search movies by title
-* Search using button click
-* Search using Enter key
-* Debounced live search (600ms)
-* Default movie search on page load
-* Input validation (minimum 2 characters)
-
-### Movie Results
-
-* Real movie data from OMDB API
-* Movie posters
-* Poster fallback placeholders
-* Movie title
-* Release year
-* Animated movie cards
-* Responsive movie grid
-
-### Movie Details Modal
-
-* Full movie details
-* Large movie poster
-* IMDb rating
-* Visual rating bar
-* Runtime
-* Genre
-* Director
-* Actors
-* Awards
-* Language
-* Country
-* Box Office earnings
-* IMDb profile link
-
-### Pagination
-
-* First page button
-* Previous page button
-* Page numbers
-* Next page button
-* Last page button
-* Dynamic page range
-* Result count display
-
-### User Experience
-
-* Skeleton loading cards
-* Empty state
-* Error state
-* Retry button
-* Back To Top button
-* Responsive design
-* Dark neon cyberpunk interface
-
----
-
-## 🛠️ Tech Stack
-
-* HTML5
-* CSS3
-* Vanilla JavaScript
-* Bootstrap 5
-* jQuery 3.7.1
-* OMDB API
-
----
-
-## 🔑 OMDB API Setup
-
-This project requires a free OMDB API key.
-
-### Step 1
-
-Visit:
-
-https://www.omdbapi.com/
-
-### Step 2
-
-Click the **API Key** tab.
-
-### Step 3
-
-Choose the **Free Plan**.
-
-### Step 4
-
-Enter your email address.
-
-### Step 5
-
-Check your inbox and copy your API key.
-
-### Step 6
-
-Open:
-
-```javascript
-script.js
-```
-
-Replace:
-
-```javascript
-const API_KEY = "your_omdb_key_here";
-```
-
-With:
-
-```javascript
-const API_KEY = "YOUR_API_KEY";
-```
-
----
-
-## 🚀 How To Run
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Bootstrap 5
+- jQuery 3.7.1
+- OMDB API
+- GitHub Pages
+  Folder Structure
+  nexsoft-movie-search/
+  index.html
+  styles.css
+  script.js
+  README.md
+  LICENSE
+  .gitignore
+  Getting Started
 
 Clone the repository:
 
-```powershell
 git clone https://github.com/fazal305/nexsoft-movie-search.git
-```
 
-Open the project folder:
+Open the folder:
 
-```powershell
 cd nexsoft-movie-search
-```
 
-Open:
-
-```text
-index.html
-```
-
-in your browser.
+Open index.html in your browser.
 
 No build tools or installation required.
 
----
+OMDB API Setup
 
-## 📸 Screenshot
+This project uses the OMDB API.
 
-Add your screenshot after testing:
+API base URL:
 
-```markdown
-![MovieSearch Screenshot](screenshot.png)
-```
+https://www.omdbapi.com/
 
----
+The API key is stored in script.js for internship demo purposes:
 
-## ✅ Nexsoft Solutions Requirements Covered
+const API_KEY = "YOUR_API_KEY";
 
-### Requirement 1
+For production-level projects, API keys should be handled through a backend or protected environment setup because frontend API keys are visible in browser source code.
 
-Fetch movie data from API
+Architecture Notes
 
-✔ OMDB API Search Endpoint
+The project is split into three main files:
 
-✔ OMDB API Detail Endpoint
+index.html contains the page structure, search form, result sections, pagination area, modal, and footer.
+styles.css handles the dark neon layout, responsive grid, cards, skeleton loading, modal styling, and buttons.
+script.js handles OMDB API requests, search validation, live search debounce, pagination, movie cards, movie details modal, poster fallback, error state, and back-to-top behavior.
 
-✔ fetch()
+The updated JavaScript escapes API text before inserting it into HTML templates to make rendering safer.
 
-✔ async/await
+Accessibility
 
-✔ try/catch
+Accessibility support includes:
 
-### Requirement 2
+Semantic header, main, section, nav, and footer
+Search input label for screen readers
+aria-live validation and result count messages
+Button type="button" attributes
+aria-current on active filter and pagination buttons
+Descriptive poster alt text
+Keyboard-friendly Bootstrap modal
+Back-to-top button with accessible label
+Performance
 
-Implement movie search functionality
+Performance notes:
 
-✔ Search input
+Static frontend project
+No build process
+Lazy-loaded poster images
+Skeleton loading for better perceived performance
+Lightweight JavaScript
+GitHub Pages compatible
+Testing Checklist
 
-✔ Search button
+Before final submission:
 
-✔ Enter key support
-
-✔ Validation
-
-✔ Loading state
-
-✔ Live search
-
-### Requirement 3
-
-Display movie details and posters
-
-✔ Posters
-
-✔ Poster fallback
-
-✔ Movie details modal
-
-✔ IMDb ratings
-
-✔ IMDb link
-
-### Requirement 4
-
-Add pagination
-
-✔ Dynamic pagination
-
-✔ First / Previous / Next / Last
-
-✔ Page range display
-
-### Requirement 5
-
-Create responsive user interface
-
-✔ Bootstrap responsive layout
-
-✔ Mobile-friendly design
-
-✔ Empty state
-
-✔ Error state
-
-✔ Skeleton loading
-
-✔ Back To Top button
-
----
-
-## 👨‍💻 Author
-
-**Fazal Abbas**
-
-Frontend Developer | Software Engineering Student
-
-GitHub:
-https://github.com/fazal305
-
-LinkedIn:
-https://www.linkedin.com/in/fazal-abbas-4653dg86
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
+Search for a valid movie
+Search using Enter key
+Test live search
+Search with fewer than 2 characters
+Search for a movie with no poster
+Open movie details modal
+Test IMDb link
+Test pagination buttons
+Test genre shortcut buttons
+Test retry button by simulating API error
+Test mobile responsiveness
+Run JavaScript syntax check:
+node --check script.js
+Lessons Learned
+Fetching real API data with JavaScript
+Working with OMDB search and detail endpoints
+Building dynamic pagination
+Creating Bootstrap modals with API data
+Handling loading, empty, and error states
+Improving safe dynamic HTML rendering
+Preparing an API-based frontend project for portfolio use
+Future Improvements
+Add search history
+Add favorites with localStorage
+Add year filter
+Add movie type filter
+Add watchlist page
+Add light/dark theme toggle
+Move API key handling to backend proxy
+Add PWA support

@@ -1,63 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="A responsive movie search app built with HTML, CSS, JavaScript, Bootstrap, jQuery, and OMDB API." />
 
   <title>MovieSearch | Nexsoft Solutions</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="app-header">
     <div class="container">
-      <nav class="app-nav">
+      <nav class="app-nav" aria-label="Main navigation">
         <a href="#" class="app-logo">🎬 MovieSearch</a>
-        <span class="internship-badge">Nexsoft Solutions</span>
+        <span class="internship-badge">Fazal Labs · BrowserLab</span>
       </nav>
 
       <section class="hero-section">
         <p class="eyebrow-text">OMDB API Movie Finder</p>
         <h1>Search movies, explore posters, and view full details.</h1>
         <p class="hero-text">
-          A responsive movie search application built with HTML, CSS, Bootstrap, jQuery, and Vanilla JavaScript.
+          A responsive movie search application built with HTML, CSS, Bootstrap, jQuery, and vanilla JavaScript.
         </p>
 
         <form id="search-form" class="search-box">
-          <input
-            type="text"
-            id="search-input"
-            class="form-control"
-            placeholder="Search movies like Batman, Avengers, Interstellar..."
-            autocomplete="off"
-          />
+          <label class="visually-hidden" for="search-input">Search movie title</label>
+
+          <input type="text" id="search-input" class="form-control"
+            placeholder="Search movies like Batman, Avengers, Interstellar..." autocomplete="off" />
+
           <button type="submit" id="search-btn" class="btn search-btn">
             Search
           </button>
         </form>
 
-        <p id="validation-message" class="validation-message"></p>
+        <p id="validation-message" class="validation-message" aria-live="polite"></p>
       </section>
     </div>
   </header>
 
   <main class="main-content">
     <div class="container">
-      <section class="filter-section">
-        <button class="genre-pill active" data-genre="all">All</button>
-        <button class="genre-pill" data-genre="action">Action</button>
-        <button class="genre-pill" data-genre="comedy">Comedy</button>
-        <button class="genre-pill" data-genre="drama">Drama</button>
-        <button class="genre-pill" data-genre="sci-fi">Sci-Fi</button>
-        <button class="genre-pill" data-genre="horror">Horror</button>
+      <section class="filter-section" aria-label="Movie genre shortcuts">
+        <button class="genre-pill active" type="button" data-genre="all" aria-current="true">All</button>
+        <button class="genre-pill" type="button" data-genre="action">Action</button>
+        <button class="genre-pill" type="button" data-genre="comedy">Comedy</button>
+        <button class="genre-pill" type="button" data-genre="drama">Drama</button>
+        <button class="genre-pill" type="button" data-genre="sci-fi">Sci-Fi</button>
+        <button class="genre-pill" type="button" data-genre="horror">Horror</button>
       </section>
 
-      <section class="results-summary">
+      <section class="results-summary" aria-label="Movie results summary">
         <div>
           <h2 id="results-title">Loading popular movies...</h2>
-          <p id="results-count">Please wait while we fetch movie data.</p>
+          <p id="results-count" aria-live="polite">Please wait while we fetch movie data.</p>
         </div>
 
         <button id="clear-search-btn" class="clear-search-btn d-none" type="button">
@@ -65,11 +69,11 @@
         </button>
       </section>
 
-      <section id="status-area" class="status-area"></section>
+      <section id="status-area" class="status-area" aria-live="polite"></section>
 
-      <section id="movies-grid" class="movies-grid"></section>
+      <section id="movies-grid" class="movies-grid" aria-label="Movie results"></section>
 
-      <section id="pagination-area" class="pagination-area"></section>
+      <nav id="pagination-area" class="pagination-area" aria-label="Pagination"></nav>
     </div>
   </main>
 
@@ -109,4 +113,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
