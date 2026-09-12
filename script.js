@@ -23,11 +23,20 @@ function escapeHtml(value) {
 async function searchMovies(query, page = 1) {
   if (appState.isLoading) return;
 
+  if (typeof navigator !== "undefined" && navigator.onLine === false) {
+    appState.currentQuery = query;
+    appState.currentPage = page;
+    showError("You're offline — check your connection and try again.");
+    return;
+  }
+
   appState.isLoading = true;
   appState.currentQuery = query;
   appState.currentPage = page;
 
   showLoading();
+
+  const slowNetworkTimer = setTimeout(showSlowNetworkNotice, 5000);
 
   try {
     const searchUrl = `${API_BASE}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&type=movie&page=${page}`;
@@ -54,8 +63,13 @@ async function searchMovies(query, page = 1) {
     $("#results-count").text(`Showing results ${startResult}-${endResult} of ${appState.totalResults}`);
     $("#clear-search-btn").removeClass("d-none");
   } catch {
-    showError("Unable to reach OMDB API. Please verify your API key, internet connection, or daily request limit.");
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      showError("You're offline — check your connection and try again.");
+    } else {
+      showError("Unable to reach OMDB API. Please verify your API key, internet connection, or daily request limit.");
+    }
   } finally {
+    clearTimeout(slowNetworkTimer);
     appState.isLoading = false;
   }
 }
@@ -292,6 +306,14 @@ function showLoading() {
       </article>
     `);
   }
+}
+
+function showSlowNetworkNotice() {
+  if (!appState.isLoading || $("#slow-network-notice").length) return;
+
+  $("#status-area").append(`
+    <p id="slow-network-notice" class="slow-network-notice">Still searching...</p>
+  `);
 }
 
 function showError(message) {

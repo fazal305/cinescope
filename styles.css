@@ -204,6 +204,12 @@ a {
   margin-bottom: 1rem;
 }
 
+.slow-network-notice {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
