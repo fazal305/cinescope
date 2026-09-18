@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { getMovieDetails } from '../services/movieApi.js'
 
 const SLOW_NETWORK_DELAY_MS = 4000
@@ -8,6 +8,7 @@ export function useMovieDetails(movieId) {
   const [movie, setMovie] = useState(null)
   const [error, setError] = useState(null)
   const [isSlow, setIsSlow] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     if (!movieId) {
@@ -42,7 +43,9 @@ export function useMovieDetails(movieId) {
       clearTimeout(slowTimer)
       controller.abort()
     }
-  }, [movieId])
+  }, [movieId, retryCount])
 
-  return { status, movie, error, isSlow }
+  const retry = useCallback(() => setRetryCount((count) => count + 1), [])
+
+  return { status, movie, error, isSlow, retry }
 }
