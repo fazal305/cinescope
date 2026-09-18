@@ -9,7 +9,7 @@ other public movie API — it is built to consume a backend provided by a
 teacher/instructor, whose contract is documented (and currently marked
 `TBD`) in [API-CONTRACT.md](./API-CONTRACT.md).
 
-**Live Demo:** not yet deployed — see [Deployment](#deployment).
+**Live Demo:** https://fazal305.github.io/cinescope/
 
 ## Status
 
@@ -138,14 +138,28 @@ npm run preview   # serve the build locally to sanity-check it
 
 ## Deployment
 
-Not yet deployed. Planned target: GitHub Pages, matching this repo's
-existing hosting. Before this is marked live, the following will be
-verified against the deployed URL specifically (not just `localhost`):
+Deployed to GitHub Pages at https://fazal305.github.io/cinescope/ via the
+GitHub Actions workflow in `.github/workflows/deploy.yml`, which runs on
+every push to `main`: install → test → build → deploy.
 
-- CORS: the backend must allow requests from the production origin
-- No login gate / deployment protection blocking the public URL
-- Client-side routes (`/movies/:id`) resolve correctly, not just `/`
-- `robots.txt` and `sitemap.xml` are reachable at the site root
+Because GitHub Pages is static hosting with no server-side rewrites,
+`public/404.html` implements the standard
+[SPA-on-GitHub-Pages redirect](https://github.com/rafgraph/spa-github-pages)
+so a direct load or refresh of `/movies/:id` resolves correctly instead of
+404ing — verified live, not just in local dev.
+
+Verified against the live URL specifically (not just `localhost`):
+
+- ✅ No login gate / deployment protection blocking the public URL
+- ✅ Client-side routes (`/movies/:id`) resolve correctly on direct load
+- ✅ `robots.txt` and `sitemap.xml` reachable at the site root
+- ✅ Unknown routes render the app's own 404 page, not GitHub's
+
+Currently deployed with `VITE_USE_MOCK_API=true` (visibly labeled "Demo
+mode" in the UI), since no backend contract exists yet. Once
+`API-CONTRACT.md` is filled in, set `VITE_API_BASE_URL` as a repository
+variable/secret, flip the workflow's `VITE_USE_MOCK_API` to `false`, and
+confirm CORS allows requests from this origin.
 
 ## Known limitations
 
@@ -156,8 +170,11 @@ verified against the deployed URL specifically (not just `localhost`):
 - The mock's field-mapping logic in `movieMappers.js` will need rewriting
   once real backend field names are known (by design — that's the one
   file meant to absorb that change).
-- Canonical URL, `robots.txt`/`sitemap.xml` domain, and social preview
-  image are placeholders pending deployment.
+- The social preview image (`og:image`/`twitter:image`) is still missing —
+  it needs to be a real screenshot of the deployed, populated app, and
+  this environment has no way to save a rendered screenshot to disk as an
+  image file. Capturing and adding one is the one open item from the
+  original spec's SEO checklist.
 
 ## Accessibility
 
