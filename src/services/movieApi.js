@@ -1,32 +1,63 @@
-// API adapter boundary for the teacher-provided movie backend.
+// API adapter for the CineScope Go + MongoDB backend.
 //
 // This is the ONLY file in the app that is allowed to know the backend's
-// actual endpoint paths, HTTP methods, and response field names. Every
-// other module consumes the stable frontend movie model documented in
-// API-CONTRACT.md, never raw backend fields directly.
-//
-// STATUS: the backend contract has not been provided yet (see
-// API-CONTRACT.md). By default these functions fail loudly instead of
-// guessing at endpoint shapes, so the UI shows a real "not configured"
-// state instead of pretending to be connected to a working backend.
-//
-// Setting VITE_USE_MOCK_API=true switches to a local, clearly-labeled mock
-// (see mockMovieApi.js) so the UI can be built and demoed before the real
-// contract exists. This is a temporary development aid, not a production
-// data source — never rely on it once the teacher's API is available.
+// endpoint paths, HTTP methods, and response field names. Every other module
+// consumes the stable frontend movie model — see API-CONTRACT.md.
 
 import * as mockMovieApi from './mockMovieApi.js'
+import { toMovieDetails, toMovieSummary } from '../utils/movieMappers.js'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+const API_KEY = import.meta.env.VITE_API_KEY || ''
 const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true'
 
 class ApiNotConfiguredError extends Error {
-  constructor() {
-    super(
-      'VITE_API_BASE_URL is not set. The teacher backend API contract has ' +
-        'not been configured yet — see API-CONTRACT.md.',
-    )
+  constructor(message) {
+    super(message)
     this.name = 'ApiNotConfiguredError'
+  }
+}
+
+async function apiFetch(path, { signal } = {}) {
+  let response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'X-API-Key': API_KEY,
+      },
+      signal,
+    })
+  } catch (err) {
+    if (err?.name === 'AbortError') throw err
+    throw new Error('Network error — is the API running?')
+  }
+
+  if (response.ok) {
+    return response.json()
+  }
+
+  let message = `Request failed (${response.status})`
+  try {
+    const body = await response.json()
+    if (body?.message) message = body.message
+  } catch {
+    // ignore non-JSON error bodies
+  }
+  throw new Error(message)
+}
+
+function assertConfigured() {
+  if (!API_BASE_URL) {
+    throw new ApiNotConfiguredError(
+      'VITE_API_BASE_URL is not set. Configure the Go API base URL — see API-CONTRACT.md.',
+    )
+  }
+  if (!API_KEY) {
+    throw new ApiNotConfiguredError(
+      'VITE_API_KEY is not set. The API requires an X-API-Key header — see API-CONTRACT.md.',
+    )
   }
 }
 
@@ -38,11 +69,14 @@ class ApiNotConfiguredError extends Error {
  */
 export async function searchMovies(query, options = {}) {
   if (USE_MOCK_API) return mockMovieApi.searchMovies(query, options)
-  if (!API_BASE_URL) throw new ApiNotConfiguredError()
+  assertConfigured()
 
-  // TODO: replace with the real search endpoint once the teacher's API
-  // contract is known. Do not implement this against a guessed shape.
-  throw new Error('searchMovies is not implemented: backend contract TBD.')
+  const params = new URLSearchParams({ search: query ?? '' })
+  const raw = await apiFetch(`/api/v1/movies?${params}`, options)
+  if (!Array.isArray(raw)) {
+    throw new Error('Unexpected search response from API.')
+  }
+  return raw.map(toMovieSummary)
 }
 
 /**
@@ -53,9 +87,8 @@ export async function searchMovies(query, options = {}) {
  */
 export async function getMovieDetails(movieId, options = {}) {
   if (USE_MOCK_API) return mockMovieApi.getMovieDetails(movieId, options)
-  if (!API_BASE_URL) throw new ApiNotConfiguredError()
+  assertConfigured()
 
-  // TODO: replace with the real details endpoint once the teacher's API
-  // contract is known. Do not implement this against a guessed shape.
-  throw new Error('getMovieDetails is not implemented: backend contract TBD.')
+  const raw = await apiFetch(`/api/v1/movies/${encodeURIComponent(movieId)}`, options)
+  return toMovieDetails(raw)
 }

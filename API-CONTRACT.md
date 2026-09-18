@@ -1,90 +1,104 @@
 # API Contract
 
-This document records the actual contract of the backend CineScope talks to.
-It is maintained as ground truth is confirmed — nothing here is guessed.
+Ground truth for the CineScope Go + MongoDB backend (`../cinescope-api`).
 
-**Status: TBD — Teacher API Contract Required.**
-
-Until the fields below are filled in, `src/services/movieApi.js` does not
-call any backend; it throws a clear "not configured" error so the UI can
-show a real, honest error state instead of pretending to work.
-
-## Interim: mock data for development
-
-With `VITE_USE_MOCK_API=true` (see `.env.example`), `movieApi.js` instead
-delegates to `src/services/mockMovieApi.js`, which searches a small local
-dataset (`src/services/mockBackendData.js`) and simulates network latency.
-
-This mock data is deliberately shaped with different field names than the
-frontend model (`movie_id`, `movie_title`, `poster_path`, ...) so that
-`src/utils/movieMappers.js` has a real normalization step to perform,
-instead of being a pass-through. It exists purely so the UI could be built
-and demoed before a backend existed — it is never used unless that flag is
-explicitly set, and the app clearly labels itself "Demo mode" in the UI
-whenever it's active. **None of the field names below are real** until this
-document says otherwise.
+**Status: Implemented.**
 
 ## Base URL
 
-TBD — Teacher API Contract Required
+Local default: `http://localhost:8080`
+
+Set in the frontend via `VITE_API_BASE_URL` (no trailing slash).
+
+## Authentication
+
+All `/api/*` routes require an API key.
+
+| Header | Value |
+|--------|--------|
+| `X-API-Key` | Same secret as server `API_KEY` |
+
+Also accepted: `Authorization: Bearer <API_KEY>`.
+
+Frontend: set `VITE_API_KEY` (sent automatically by `movieApi.js`).
+
+Missing/invalid key → `401`:
+
+```json
+{ "error": "missing_api_key", "message": "API key is required. Send X-API-Key header." }
+```
+
+or
+
+```json
+{ "error": "invalid_api_key", "message": "Invalid API key." }
+```
+
+`/healthz` and `/readyz` are public (no key).
 
 ## Search movies
 
 | | |
 |---|---|
-| Endpoint | TBD |
-| Method | TBD |
-| Query parameter(s) | TBD |
-| Pagination | TBD |
-| Rate limits | TBD |
+| Endpoint | `/api/v1/movies` |
+| Method | `GET` |
+| Auth | `X-API-Key` required |
+| Query parameter(s) | `search` (alias `q`) |
+| Pagination | None (server caps at 50) |
 
-Example request: TBD
+Example:
 
-Example response: TBD
+```http
+GET /api/v1/movies?search=inception
+X-API-Key: <your-api-key>
+```
 
 ## Movie details
 
 | | |
 |---|---|
-| Endpoint | TBD |
-| Method | TBD |
-| Path parameter(s) | TBD |
+| Endpoint | `/api/v1/movies/{id}` |
+| Method | `GET` |
+| Auth | `X-API-Key` required |
+| Path parameter(s) | `id` — TMDB-style `movie_id` string |
 
-Example request: TBD
+Example:
 
-Example response: TBD
+```http
+GET /api/v1/movies/27205
+X-API-Key: <your-api-key>
+```
 
 ## Field mapping
 
-Once real responses are available, this table maps backend fields to the
-frontend model used throughout the app (defined in `src/utils/movieMappers.js`).
-
 | Frontend field | Backend field | Notes |
 |---|---|---|
-| `id` | TBD | |
-| `title` | TBD | |
-| `releaseYear` | TBD | |
-| `posterUrl` | TBD | |
-| `rating` | TBD | |
-| `synopsis` | TBD | |
-| `genres` | TBD | |
-| `runtime` | TBD | |
-| `cast` | TBD | |
-| `reviews` | TBD | |
+| `id` | `movie_id` | TMDB id as string |
+| `title` | `movie_title` | |
+| `releaseYear` | `year` | |
+| `posterUrl` | `poster_path` | Absolute TMDB CDN URL |
+| `rating` | `vote_average` | 0–10 |
+| `backdropUrl` | `backdrop_path` | Absolute TMDB CDN URL |
+| `synopsis` | `overview` | |
+| `genres` | `genre_list` | `string[]` |
+| `runtimeMinutes` | `runtime_minutes` | |
+| `cast` | `cast_list` | |
+| `reviews` | `review_list` | `{ author, text }[]` |
 
 ## Images
 
-TBD — how poster/backdrop URLs are constructed (absolute vs. relative paths).
+Poster/backdrop are absolute `image.tmdb.org` URLs. Client uses them as-is.
 
 ## Errors
 
-TBD — shape of error responses (status codes, error body).
-
-## Authentication
-
-TBD — whether requests require an API key, token, or are open.
+| Status | `error` | When |
+|--------|---------|------|
+| `401` | `missing_api_key` / `invalid_api_key` | Auth failure |
+| `404` | `not_found` | Unknown movie id |
+| `400` | `bad_request` | Missing id |
+| `500` | `internal_error` | Server/DB failure |
+| `503` | `not_ready` | `/readyz` when MongoDB is down |
 
 ## CORS
 
-TBD — confirm the backend allows requests from the local dev origin and the
-deployed production origin.
+Allowed origins via `CORS_ORIGINS`. Allowed headers include `X-API-Key` and `Authorization`.

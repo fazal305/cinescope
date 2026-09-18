@@ -19,9 +19,11 @@ export async function searchMovies(query, { signal } = {}) {
   await delay(500 + Math.random() * 400, signal)
 
   const normalizedQuery = query.trim().toLowerCase()
-  const matches = MOCK_MOVIES.filter((movie) =>
-    movie.movie_title.toLowerCase().includes(normalizedQuery),
-  )
+  const matches = !normalizedQuery
+    ? MOCK_MOVIES
+    : MOCK_MOVIES.filter((movie) =>
+        movie.movie_title.toLowerCase().includes(normalizedQuery),
+      )
 
   return matches.map(toMovieSummary)
 }

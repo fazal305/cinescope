@@ -1,10 +1,8 @@
 // Normalizes raw backend responses into the stable frontend movie model.
 //
-// IMPORTANT: field paths below match the MOCK backend shape used for UI
-// development (see services/mockBackendData.js). Once the teacher's real
-// API contract is known, update ONLY this file (and API-CONTRACT.md) — no
-// component should need to change, since components never read raw
-// backend fields directly.
+// IMPORTANT: field paths match the Go API / mock backend shape
+// (movie_id, movie_title, …). See API-CONTRACT.md. Components never read
+// raw backend fields directly — change mappings only here.
 
 /**
  * @typedef {{ id: string, title: string, releaseYear: number|null, posterUrl: string|null, rating: number|null }} MovieSummary

@@ -1,4 +1,3 @@
-import EmptyState from '../components/EmptyState.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import MovieGrid from '../components/MovieGrid.jsx'
@@ -15,15 +14,14 @@ function HomePage() {
     submittedQuery,
     submit,
     clear,
+    retry,
     status,
     results,
     error,
     isSlow,
   } = useMovieSearch()
 
-  function handleRetry() {
-    submit(submittedQuery)
-  }
+  const isBrowsing = !submittedQuery
 
   return (
     <section className={`container ${styles.wrap}`}>
@@ -39,21 +37,22 @@ function HomePage() {
       </div>
 
       <div className={styles.results} aria-live="polite">
-        <div key={status} className="fade-in">
-          {status === 'idle' && <EmptyState />}
+        <div key={`${status}-${submittedQuery}`} className="fade-in">
           {status === 'loading' && <LoadingSpinner isSlow={isSlow} />}
-          {status === 'empty' && <NoResults query={submittedQuery} />}
+          {status === 'empty' && <NoResults query={submittedQuery || 'movies'} />}
           {status === 'error' && (
             <ErrorMessage
               title={error?.kind === 'offline' ? "You're offline" : 'Unable to load movies'}
               message={error?.message}
-              onRetry={handleRetry}
+              onRetry={retry}
             />
           )}
           {status === 'success' && (
             <>
               <p className={styles.resultsCount}>
-                {results.length} {results.length === 1 ? 'result' : 'results'} for "{submittedQuery}"
+                {isBrowsing
+                  ? `${results.length} ${results.length === 1 ? 'movie' : 'movies'}`
+                  : `${results.length} ${results.length === 1 ? 'result' : 'results'} for "${submittedQuery}"`}
               </p>
               <MovieGrid movies={results} />
             </>
