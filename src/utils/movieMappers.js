@@ -1,0 +1,46 @@
+// Normalizes raw backend responses into the stable frontend movie model.
+//
+// IMPORTANT: field paths below match the MOCK backend shape used for UI
+// development (see services/mockBackendData.js). Once the teacher's real
+// API contract is known, update ONLY this file (and API-CONTRACT.md) — no
+// component should need to change, since components never read raw
+// backend fields directly.
+
+/**
+ * @typedef {{ id: string, title: string, releaseYear: number|null, posterUrl: string|null, rating: number|null }} MovieSummary
+ */
+
+/**
+ * @typedef {MovieSummary & {
+ *   backdropUrl: string|null,
+ *   synopsis: string|null,
+ *   genres: string[],
+ *   runtimeMinutes: number|null,
+ *   cast: string[],
+ *   reviews: { author: string, text: string }[],
+ * }} MovieDetails
+ */
+
+/** @returns {MovieSummary} */
+export function toMovieSummary(raw) {
+  return {
+    id: String(raw.movie_id),
+    title: raw.movie_title,
+    releaseYear: raw.year ?? null,
+    posterUrl: raw.poster_path ?? null,
+    rating: raw.vote_average ?? null,
+  }
+}
+
+/** @returns {MovieDetails} */
+export function toMovieDetails(raw) {
+  return {
+    ...toMovieSummary(raw),
+    backdropUrl: raw.backdrop_path ?? null,
+    synopsis: raw.overview ?? null,
+    genres: raw.genre_list ?? [],
+    runtimeMinutes: raw.runtime_minutes ?? null,
+    cast: raw.cast_list ?? [],
+    reviews: raw.review_list ?? [],
+  }
+}

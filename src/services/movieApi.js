@@ -6,11 +6,19 @@
 // API-CONTRACT.md, never raw backend fields directly.
 //
 // STATUS: the backend contract has not been provided yet (see
-// API-CONTRACT.md). These functions intentionally fail loudly instead of
-// guessing at endpoint shapes, so the UI can render a real "not configured"
+// API-CONTRACT.md). By default these functions fail loudly instead of
+// guessing at endpoint shapes, so the UI shows a real "not configured"
 // state instead of pretending to be connected to a working backend.
+//
+// Setting VITE_USE_MOCK_API=true switches to a local, clearly-labeled mock
+// (see mockMovieApi.js) so the UI can be built and demoed before the real
+// contract exists. This is a temporary development aid, not a production
+// data source — never rely on it once the teacher's API is available.
+
+import * as mockMovieApi from './mockMovieApi.js'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true'
 
 class ApiNotConfiguredError extends Error {
   constructor() {
@@ -29,6 +37,7 @@ class ApiNotConfiguredError extends Error {
  * @param {{ signal?: AbortSignal }} [options]
  */
 export async function searchMovies(query, options = {}) {
+  if (USE_MOCK_API) return mockMovieApi.searchMovies(query, options)
   if (!API_BASE_URL) throw new ApiNotConfiguredError()
 
   // TODO: replace with the real search endpoint once the teacher's API
@@ -43,6 +52,7 @@ export async function searchMovies(query, options = {}) {
  * @param {{ signal?: AbortSignal }} [options]
  */
 export async function getMovieDetails(movieId, options = {}) {
+  if (USE_MOCK_API) return mockMovieApi.getMovieDetails(movieId, options)
   if (!API_BASE_URL) throw new ApiNotConfiguredError()
 
   // TODO: replace with the real details endpoint once the teacher's API
