@@ -1,128 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="A responsive movie search app built with HTML, CSS, JavaScript, Bootstrap, jQuery, and OMDB API." />
+    <title>CineScope — Movie Search &amp; Details</title>
+    <meta
+      name="description"
+      content="CineScope is a cinematic movie search app: look up films and browse full details, cast, and ratings."
+    />
+    <!-- TODO(Phase 8): replace with the real deployed URL once live. -->
+    <link rel="canonical" href="https://example.com/cinescope/" />
 
-  <title>MovieSearch | Nexsoft Solutions</title>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-  <link rel="canonical" href="https://fazal305.github.io/nexsoft-movie-search/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/cinescope/" />
+    <meta property="og:title" content="CineScope — Movie Search & Details" />
+    <meta
+      property="og:description"
+      content="A cinematic movie search app: look up films and browse full details, cast, and ratings."
+    />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://fazal305.github.io/nexsoft-movie-search/" />
-  <meta property="og:title" content="MovieSearch | Nexsoft Solutions" />
-  <meta property="og:description" content="A responsive movie search app built with HTML, CSS, JavaScript, Bootstrap, jQuery, and OMDB API." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CineScope — Movie Search & Details" />
+    <meta
+      name="twitter:description"
+      content="A cinematic movie search app: look up films and browse full details, cast, and ratings."
+    />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="MovieSearch | Nexsoft Solutions" />
-  <meta name="twitter:description" content="A responsive movie search app built with HTML, CSS, JavaScript, Bootstrap, jQuery, and OMDB API." />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Sora:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-  <header class="app-header">
-    <div class="container">
-      <nav class="app-nav" aria-label="Main navigation">
-        <a href="#" class="app-logo">🎬 MovieSearch</a>
-        <span class="internship-badge">Fazal Labs · BrowserLab</span>
-      </nav>
-
-      <section class="hero-section">
-        <p class="eyebrow-text">OMDB API Movie Finder</p>
-        <h1>Search movies, explore posters, and view full details.</h1>
-        <p class="hero-text">
-          A responsive movie search application built with HTML, CSS, Bootstrap, jQuery, and vanilla JavaScript.
-        </p>
-
-        <form id="search-form" class="search-box">
-          <label class="visually-hidden" for="search-input">Search movie title</label>
-
-          <input type="text" id="search-input" class="form-control"
-            placeholder="Search movies like Batman, Avengers, Interstellar..." autocomplete="off" />
-
-          <button type="submit" id="search-btn" class="btn search-btn">
-            Search
-          </button>
-        </form>
-
-        <p id="validation-message" class="validation-message" aria-live="polite"></p>
-      </section>
-    </div>
-  </header>
-
-  <main class="main-content">
-    <div class="container">
-      <section class="filter-section" aria-label="Movie genre shortcuts">
-        <button class="genre-pill active" type="button" data-genre="all" aria-current="true">All</button>
-        <button class="genre-pill" type="button" data-genre="action">Action</button>
-        <button class="genre-pill" type="button" data-genre="comedy">Comedy</button>
-        <button class="genre-pill" type="button" data-genre="drama">Drama</button>
-        <button class="genre-pill" type="button" data-genre="sci-fi">Sci-Fi</button>
-        <button class="genre-pill" type="button" data-genre="horror">Horror</button>
-      </section>
-
-      <section class="results-summary" aria-label="Movie results summary">
-        <div>
-          <h2 id="results-title">Loading popular movies...</h2>
-          <p id="results-count" aria-live="polite">Please wait while we fetch movie data.</p>
-        </div>
-
-        <button id="clear-search-btn" class="clear-search-btn d-none" type="button">
-          Clear ×
-        </button>
-      </section>
-
-      <section id="status-area" class="status-area" aria-live="polite"></section>
-
-      <section id="movies-grid" class="movies-grid" aria-label="Movie results"></section>
-
-      <nav id="pagination-area" class="pagination-area" aria-label="Pagination"></nav>
-    </div>
-  </main>
-
-  <footer class="app-footer">
-    <div class="container">
-      <p>
-        Powered by
-        <a href="https://www.omdbapi.com/" target="_blank" rel="noopener noreferrer">OMDB API</a>
-        | Built for Nexsoft Solutions Internship
-      </p>
-    </div>
-  </footer>
-
-  <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top">
-    ↑
-  </button>
-
-  <div class="modal fade" id="movie-modal" tabindex="-1" aria-labelledby="movie-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-sm-down">
-      <div class="modal-content movie-modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="movie-modal-title">Movie Details</h2>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div id="movie-modal-body" class="modal-body">
-          <div class="modal-loading">
-            <div class="spinner-border text-info" role="status"></div>
-            <p>Movie details will load here.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
-</body>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://fazal305.github.io/nexsoft-movie-search/sitemap.xml
