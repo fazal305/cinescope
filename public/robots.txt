@@ -1,5 +1,4 @@
-# TODO(Phase 8): replace example.com with the real deployed domain below.
 User-agent: *
 Allow: /
 
-Sitemap: https://example.com/cinescope/sitemap.xml
+Sitemap: https://fazal305.github.io/cinescope/sitemap.xml
