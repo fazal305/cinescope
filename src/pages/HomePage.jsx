@@ -38,18 +38,27 @@ function HomePage() {
         <SearchBar initialValue={inputValue} onSubmit={submit} onClear={clear} disabled={status === 'loading'} />
       </div>
 
-      <div className={styles.results}>
-        {status === 'idle' && <EmptyState />}
-        {status === 'loading' && <LoadingSpinner isSlow={isSlow} />}
-        {status === 'empty' && <NoResults query={submittedQuery} />}
-        {status === 'error' && (
-          <ErrorMessage
-            title={error?.kind === 'offline' ? "You're offline" : 'Unable to load movies'}
-            message={error?.message}
-            onRetry={handleRetry}
-          />
-        )}
-        {status === 'success' && <MovieGrid movies={results} />}
+      <div className={styles.results} aria-live="polite">
+        <div key={status} className="fade-in">
+          {status === 'idle' && <EmptyState />}
+          {status === 'loading' && <LoadingSpinner isSlow={isSlow} />}
+          {status === 'empty' && <NoResults query={submittedQuery} />}
+          {status === 'error' && (
+            <ErrorMessage
+              title={error?.kind === 'offline' ? "You're offline" : 'Unable to load movies'}
+              message={error?.message}
+              onRetry={handleRetry}
+            />
+          )}
+          {status === 'success' && (
+            <>
+              <p className={styles.resultsCount}>
+                {results.length} {results.length === 1 ? 'result' : 'results'} for "{submittedQuery}"
+              </p>
+              <MovieGrid movies={results} />
+            </>
+          )}
+        </div>
       </div>
     </section>
   )

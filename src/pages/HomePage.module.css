@@ -36,6 +36,12 @@
   min-height: 12rem;
 }
 
+.resultsCount {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
 @media (max-width: 600px) {
   .title {
     font-size: var(--text-3xl);

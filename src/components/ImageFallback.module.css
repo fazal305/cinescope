@@ -6,3 +6,12 @@
   color: var(--color-text-muted);
   font-size: var(--text-2xl);
 }
+
+.image {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-standard);
+}
+
+.image.loaded {
+  opacity: 1;
+}

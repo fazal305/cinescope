@@ -13,8 +13,7 @@
   border-radius: 50%;
   border: 3px solid var(--color-border-strong);
   border-top-color: var(--color-accent);
-  animation: spin var(--duration-slow, 400ms) linear infinite;
-  animation-duration: 800ms;
+  animation: spin 800ms linear infinite;
 }
 
 @keyframes spin {

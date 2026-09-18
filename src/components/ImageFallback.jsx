@@ -3,6 +3,7 @@ import styles from './ImageFallback.module.css'
 
 function ImageFallback({ src, alt, className }) {
   const [failed, setFailed] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   if (!src || failed) {
     return (
@@ -16,9 +17,10 @@ function ImageFallback({ src, alt, className }) {
     <img
       src={src}
       alt={alt}
-      className={className}
+      className={`${className ?? ''} ${styles.image} ${loaded ? styles.loaded : ''}`}
       loading="lazy"
       onError={() => setFailed(true)}
+      onLoad={() => setLoaded(true)}
     />
   )
 }
