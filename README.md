@@ -5,21 +5,22 @@ responsive grid, and open a dedicated details page with synopsis, cast,
 genres, runtime, and reviews.
 
 This is a **frontend-only** project. It does not call OMDB, TMDB, or any
-other public movie API — it is built to consume a backend provided by a
-teacher/instructor, whose contract is documented (and currently marked
-`TBD`) in [API-CONTRACT.md](./API-CONTRACT.md).
+other public movie API — it consumes
+[CineScope-REST-API](https://github.com/ChAbdulWahhab/CineScope-REST-API),
+a Go + MongoDB backend built for this project, documented in
+[API-CONTRACT.md](./API-CONTRACT.md).
 
 **Live Demo:** https://fazal305.github.io/cinescope/
 
 ## Status
 
-The backend contract has not been provided yet. The app runs today against
-a small, clearly-labeled local mock dataset (`VITE_USE_MOCK_API=true`) so
-the UI could be built and demonstrated in the meantime. A visible "Demo
-mode" badge appears in the UI whenever mock data is active — it is never
-silently presented as a live integration. See
-[API-CONTRACT.md](./API-CONTRACT.md) for exactly what's needed to connect
-a real backend.
+The backend is implemented and the frontend is fully wired to it
+(`src/services/movieApi.js`, authenticated via `X-API-Key`). The public
+GitHub Pages demo above currently runs with `VITE_USE_MOCK_API=true`
+(visibly labeled "Demo mode" in the UI) since the backend isn't deployed
+anywhere public yet — running it locally against the real API is fully
+supported and verified. See [API-CONTRACT.md](./API-CONTRACT.md) for the
+full contract.
 
 ## Features
 
@@ -53,7 +54,7 @@ needed for an app this size.
 ## Architecture
 
 ```
-Backend API (TBD)
+CineScope-REST-API (Go + MongoDB)
       ↓
 src/services/movieApi.js       ← the only file that knows backend field names
       ↓
@@ -72,8 +73,7 @@ only `movieApi.js` and `movieMappers.js` need to change.
 ```
 src/
   components/   Reusable UI: SearchBar, MovieCard, MovieGrid, ErrorMessage,
-                LoadingSpinner, EmptyState, NoResults, ImageFallback,
-                MovieDetails, Header
+                LoadingSpinner, NoResults, ImageFallback, MovieDetails, Header
   pages/        HomePage, MovieDetailsPage, NotFoundPage
   services/     movieApi.js (adapter boundary) + mock data/adapter for dev
   hooks/        useMovieSearch, useMovieDetails, useAutoFocus
@@ -85,24 +85,28 @@ public/
 
 ## API integration
 
-See [API-CONTRACT.md](./API-CONTRACT.md) for the full contract status,
-field mapping, and what's still needed from the backend owner. In short:
+See [API-CONTRACT.md](./API-CONTRACT.md) for the full contract: endpoints,
+auth, error format, and field mapping. In short:
 
-- `VITE_API_BASE_URL` unset → the adapter throws a clear "not configured"
-  error; the UI shows a real error state instead of pretending to work.
-- `VITE_USE_MOCK_API=true` → the adapter uses local mock data for UI
-  development only. Never enable this in production.
+- `VITE_API_BASE_URL` + `VITE_API_KEY` unset → the adapter throws a clear
+  "not configured" error; the UI shows a real error state instead of
+  pretending to work.
+- `VITE_USE_MOCK_API=true` → the adapter uses local mock data instead of
+  the real API (useful when the backend isn't running locally).
 
 ## Environment variables
 
 Copy `.env.example` to `.env`:
 
 ```
-VITE_API_BASE_URL=
+VITE_API_BASE_URL=http://localhost:8080
+VITE_API_KEY=
 VITE_USE_MOCK_API=false
 ```
 
-`.env` is git-ignored and must never be committed.
+Get the real `VITE_API_KEY` value from whoever is running the backend — it
+must match the backend's own `API_KEY`. `.env` is git-ignored and must
+never be committed.
 
 ## Installation
 
@@ -112,12 +116,15 @@ npm install
 
 ## Development
 
+Run [CineScope-REST-API](https://github.com/ChAbdulWahhab/CineScope-REST-API)
+locally first (see its own README), then:
+
 ```bash
 npm run dev
 ```
 
-To develop against mock data before a backend is available, set
-`VITE_USE_MOCK_API=true` in `.env` first.
+To develop without the backend running, set `VITE_USE_MOCK_API=true` in
+`.env` instead.
 
 ## Testing
 
@@ -156,20 +163,19 @@ Verified against the live URL specifically (not just `localhost`):
 - ✅ Unknown routes render the app's own 404 page, not GitHub's
 
 Currently deployed with `VITE_USE_MOCK_API=true` (visibly labeled "Demo
-mode" in the UI), since no backend contract exists yet. Once
-`API-CONTRACT.md` is filled in, set `VITE_API_BASE_URL` as a repository
-variable/secret, flip the workflow's `VITE_USE_MOCK_API` to `false`, and
-confirm CORS allows requests from this origin.
+mode" in the UI), since the backend isn't deployed anywhere public yet —
+it only runs locally. Once it has a public URL, set `VITE_API_BASE_URL`
+and `VITE_API_KEY` as repository variables/secrets, flip the workflow's
+`VITE_USE_MOCK_API` to `false`, and confirm its CORS config allows
+requests from this GitHub Pages origin.
 
 ## Known limitations
 
-- No backend is connected yet — all data shown is mock/demo data,
-  clearly labeled as such in the UI.
-- Pagination, rate limits, authentication, and CORS behavior are all
-  unknown until the real API contract is provided.
-- The mock's field-mapping logic in `movieMappers.js` will need rewriting
-  once real backend field names are known (by design — that's the one
-  file meant to absorb that change).
+- The public GitHub Pages demo runs on mock data (clearly labeled) since
+  the real backend only runs locally for now — running both together
+  locally is fully verified and works end-to-end.
+- Pagination and rate limits: none implemented server-side beyond the
+  search endpoint's 50-result cap (see API-CONTRACT.md).
 - The social preview image (`og:image`/`twitter:image`) is still missing —
   it needs to be a real screenshot of the deployed, populated app, and
   this environment has no way to save a rendered screenshot to disk as an
