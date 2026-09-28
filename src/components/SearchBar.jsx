@@ -1,28 +1,28 @@
-import { useEffect, useState } from 'react'
-import styles from './SearchBar.module.css'
+import { useEffect, useState } from "react";
+import styles from "./SearchBar.module.css";
 
 function SearchBar({ initialValue, onSubmit, onClear, disabled }) {
-  const [value, setValue] = useState(initialValue)
-  const [validationMessage, setValidationMessage] = useState('')
+  const [value, setValue] = useState(initialValue);
+  const [validationMessage, setValidationMessage] = useState("");
 
   useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+    setValue(initialValue);
+  }, [initialValue]);
 
   function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
     if (!value.trim()) {
-      setValidationMessage('Enter a movie title to search.')
-      return
+      setValidationMessage("Enter a movie title to search.");
+      return;
     }
-    setValidationMessage('')
-    onSubmit(value)
+    setValidationMessage("");
+    onSubmit(value);
   }
 
   function handleClear() {
-    setValue('')
-    setValidationMessage('')
-    onClear()
+    setValue("");
+    setValidationMessage("");
+    onClear();
   }
 
   return (
@@ -58,7 +58,7 @@ function SearchBar({ initialValue, onSubmit, onClear, disabled }) {
         {validationMessage}
       </p>
     </form>
-  )
+  );
 }
 
-export default SearchBar
+export default SearchBar;

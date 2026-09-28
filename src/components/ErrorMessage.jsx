@@ -1,6 +1,6 @@
-import styles from './ErrorMessage.module.css'
+import styles from "./ErrorMessage.module.css";
 
-function ErrorMessage({ title = 'Something went wrong', message, onRetry }) {
+function ErrorMessage({ title = "Something went wrong", message, onRetry }) {
   return (
     <div className={styles.wrap} role="alert">
       <h3 className={styles.title}>{title}</h3>
@@ -11,7 +11,7 @@ function ErrorMessage({ title = 'Something went wrong', message, onRetry }) {
         </button>
       )}
     </div>
-  )
+  );
 }
 
-export default ErrorMessage
+export default ErrorMessage;

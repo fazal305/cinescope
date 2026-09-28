@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
-import ImageFallback from './ImageFallback.jsx'
-import { formatRating } from '../utils/formatters.js'
-import styles from './MovieCard.module.css'
+import { Link } from "react-router-dom";
+import ImageFallback from "./ImageFallback.jsx";
+import { formatRating } from "../utils/formatters.js";
+import styles from "./MovieCard.module.css";
 
 function MovieCard({ movie }) {
-  const rating = formatRating(movie.rating)
+  const rating = formatRating(movie.rating);
 
   return (
     <Link to={`/movies/${movie.id}`} className={styles.card}>
@@ -21,7 +21,7 @@ function MovieCard({ movie }) {
         </div>
       </div>
     </Link>
-  )
+  );
 }
 
-export default MovieCard
+export default MovieCard;

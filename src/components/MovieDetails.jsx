@@ -1,13 +1,13 @@
-import ImageFallback from './ImageFallback.jsx'
-import { formatRating, formatRuntime } from '../utils/formatters.js'
-import styles from './MovieDetails.module.css'
+import ImageFallback from "./ImageFallback.jsx";
+import { formatRating, formatRuntime } from "../utils/formatters.js";
+import styles from "./MovieDetails.module.css";
 
 function MovieDetails({ movie }) {
-  const rating = formatRating(movie.rating)
-  const runtime = formatRuntime(movie.runtimeMinutes)
-  const hasGenres = movie.genres && movie.genres.length > 0
-  const hasCast = movie.cast && movie.cast.length > 0
-  const hasReviews = movie.reviews && movie.reviews.length > 0
+  const rating = formatRating(movie.rating);
+  const runtime = formatRuntime(movie.runtimeMinutes);
+  const hasGenres = movie.genres && movie.genres.length > 0;
+  const hasCast = movie.cast && movie.cast.length > 0;
+  const hasReviews = movie.reviews && movie.reviews.length > 0;
 
   return (
     <article>
@@ -28,7 +28,9 @@ function MovieDetails({ movie }) {
           <h1 className={styles.title}>{movie.title}</h1>
 
           <div className={styles.badges}>
-            {movie.releaseYear && <span className={styles.badge}>{movie.releaseYear}</span>}
+            {movie.releaseYear && (
+              <span className={styles.badge}>{movie.releaseYear}</span>
+            )}
             {runtime && <span className={styles.badge}>{runtime}</span>}
             {hasGenres &&
               movie.genres.map((genre) => (
@@ -44,7 +46,10 @@ function MovieDetails({ movie }) {
             <p className={styles.unavailable}>Rating not available.</p>
           )}
 
-          <section aria-labelledby="synopsis-heading" className={styles.section}>
+          <section
+            aria-labelledby="synopsis-heading"
+            className={styles.section}
+          >
             <h2 id="synopsis-heading" className={styles.sectionTitle}>
               Synopsis
             </h2>
@@ -60,19 +65,24 @@ function MovieDetails({ movie }) {
               <h2 id="cast-heading" className={styles.sectionTitle}>
                 Cast
               </h2>
-              <p className={styles.castList}>{movie.cast.join(', ')}</p>
+              <p className={styles.castList}>{movie.cast.join(", ")}</p>
             </section>
           )}
 
           {hasReviews && (
-            <section aria-labelledby="reviews-heading" className={styles.section}>
+            <section
+              aria-labelledby="reviews-heading"
+              className={styles.section}
+            >
               <h2 id="reviews-heading" className={styles.sectionTitle}>
                 Reviews
               </h2>
               <ul className={styles.reviewList}>
                 {movie.reviews.map((review, index) => (
                   <li key={index} className={styles.review}>
-                    <p className={styles.reviewText}>&ldquo;{review.text}&rdquo;</p>
+                    <p className={styles.reviewText}>
+                      &ldquo;{review.text}&rdquo;
+                    </p>
                     <p className={styles.reviewAuthor}>— {review.author}</p>
                   </li>
                 ))}
@@ -82,7 +92,7 @@ function MovieDetails({ movie }) {
         </div>
       </div>
     </article>
-  )
+  );
 }
 
-export default MovieDetails
+export default MovieDetails;

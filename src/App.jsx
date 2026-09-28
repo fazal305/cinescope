@@ -1,8 +1,8 @@
-import { Route, Routes } from 'react-router-dom'
-import Header from './components/Header.jsx'
-import HomePage from './pages/HomePage.jsx'
-import MovieDetailsPage from './pages/MovieDetailsPage.jsx'
-import NotFoundPage from './pages/NotFoundPage.jsx'
+import { Route, Routes } from "react-router-dom";
+import Header from "./components/Header.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         </Routes>
       </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -27,7 +27,7 @@ export function toMovieSummary(raw) {
     releaseYear: raw.year ?? null,
     posterUrl: raw.poster_path ?? null,
     rating: raw.vote_average ?? null,
-  }
+  };
 }
 
 /** @returns {MovieDetails} */
@@ -40,5 +40,5 @@ export function toMovieDetails(raw) {
     runtimeMinutes: raw.runtime_minutes ?? null,
     cast: raw.cast_list ?? [],
     reviews: raw.review_list ?? [],
-  }
+  };
 }

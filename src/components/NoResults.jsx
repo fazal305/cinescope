@@ -1,4 +1,4 @@
-import styles from './StatusMessage.module.css'
+import styles from "./StatusMessage.module.css";
 
 function NoResults({ query }) {
   return (
@@ -8,7 +8,7 @@ function NoResults({ query }) {
       </span>
       <p className={styles.text}>No movies found for "{query}".</p>
     </div>
-  )
+  );
 }
 
-export default NoResults
+export default NoResults;

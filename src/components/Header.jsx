@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import styles from './Header.module.css'
+import { Link } from "react-router-dom";
+import styles from "./Header.module.css";
 
 function Header() {
   return (
@@ -10,7 +10,7 @@ function Header() {
         </Link>
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
